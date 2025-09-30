@@ -2,7 +2,13 @@ import fetch from "node-fetch";
 
 export default async function handler(req, res) {
   try {
-    const response = await fetch("https://api.coindesk.com/v1/bpi/currentprice.json");
+    const url = "https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=5m&limit=10";
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      return res.status(response.status).json({ error: "Binance API error", status: response.status });
+    }
+
     const data = await response.json();
     res.status(200).json(data);
   } catch (err) {
